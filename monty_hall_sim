@@ -1,0 +1,41 @@
+import numpy as np
+
+def monty_hall(switch=False):
+    
+    # initialize doors (0:goat, 1:car)
+    doors = np.array([0,0,1])
+
+    # shuffle doors
+    np.random.shuffle(doors)
+
+    # randomly select door
+    sel = np.random.randint(0,3)
+
+    if switch:
+        # remove selected door
+        non_sel = [(i,x) for i, x in enumerate(doors) if i != sel]
+        non_sel = sorted(non_sel, key=lambda x:x[1])
+
+        # select the other door
+        sel = non_sel[1][0]
+
+    return doors[sel]
+
+
+if __name__ == "__main__":
+
+    iters = 100000
+
+    results = []
+
+    for i in range(iters):
+        results.append(monty_hall(switch=False))
+    
+    print("Win percentage when sticking with original door: {}".format(sum(results)/iters))
+
+    results = []
+
+    for i in range(iters):
+        results.append(monty_hall(switch=True))
+    
+    print("Win percentage when switching doors: {}".format(sum(results)/iters))
